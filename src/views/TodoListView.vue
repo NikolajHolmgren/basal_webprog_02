@@ -3,7 +3,7 @@
       <input v-model="newItemText" @keyup.enter="addItem" placeholder="Add a new to-do">
       <button @click="addItem">Add</button>
       
-      <div v-for="(item, index) in items" :key="index">
+      <div v-for="(item, index) in items" :key="item.id">
         <TodoItem 
           :item="item" 
           @update="updateItem(index, $event)" 
