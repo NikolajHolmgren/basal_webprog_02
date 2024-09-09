@@ -7,7 +7,8 @@
         <TodoItem 
           :item="item" 
           @update="updateItem(index, $event)" 
-          @remove="removeItem(index)">
+          @remove="removeItem(index)"
+          @fetch="fetchItem(index)" > 
         </TodoItem>
       </div>
     </div>
@@ -34,8 +35,8 @@
     methods: {
       // The .trim() method is a built-in JavaScript string method that removes whitespace from both ends of a string.
       addItem() {
-        if (this.newItemText.trim()) {
-        const newItem = {
+        if (this.newItemText.trim()) { // trim fjerner whitespace fra inputtet
+        const newItem = { // item'et får en id og noget tekst
           id: this.items.length + 1,
           text: this.newItemText,
           completed: false
@@ -60,7 +61,16 @@
       },
       removeItem(index) {
         this.items.splice(index, 1);
+      },
+      async fetchItem(index) {
+      const itemId = this.items[index].id;
+      try {
+        const item = await TodoService.getTodoItem(itemId);
+        this.$set(this.items, index, item);
+      } catch (error) {
+        console.error("Error fetching document: ", error);
       }
+    }
     }
   };
   </script>
